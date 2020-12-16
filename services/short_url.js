@@ -33,7 +33,7 @@ const createShortUrl = async (req, res, next) => {
 
       let urlCodeExists = UrlStore.find(url => url.urlCode === urlCode)
 
-      if (!urlCodeExists) {
+      if (urlCodeExists !== undefined) {
         validationError.urlCode = "Url Code already exists.";
       }
 
@@ -74,7 +74,37 @@ const createShortUrl = async (req, res, next) => {
   }
 }
 
+const redirectToLongUrl = async (req, res, next) => {
+  try {
+    let url = UrlStore.find(url => url.urlCode === req.params.shortcode);
+
+    if (url !== undefined) {
+
+      res.redirect(url.longUrl);
+
+      return UrlStore.forEach(url => {
+        if (url.urlCode === req.params.shortcode) {
+          url.clickCount++
+          url.lastVisitedAt = Date.now()
+        }
+      });
+    }
+
+    return res.status(404).json({
+      'code': 'BAD_REQUEST_ERROR',
+      'description': 'Shortcode not found'
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      'code': 'SERVER_ERROR',
+      'description': 'something went wrong, Please try again',
+      'error': error.message
+    });
+  }
+}
+
 module.exports = {
   createShortUrl,
-
+  redirectToLongUrl
 }
