@@ -3,7 +3,7 @@
  <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
 </p>
 
-<h3 align="center">DAOFAB TEST API</h3>
+<h3 align="center">URL SHORTENER</h3>
 
 ---
 
@@ -27,7 +27,7 @@ A step by step series of examples that tell you how to get a development env run
 - Clone Repository
 
 ```
-git clone git@github.com:truetechcode/daofab-backend-test-api.git
+git clone git@github.com:truetechcode/node-url-shortener.git
 ```
 
 - Install Dependencies
@@ -54,5 +54,7 @@ npm start
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [Express](https://expressjs.com/) - Server Framework
+- [Express](https://expressjs.com/) - NodeJs Framework
 - [NodeJs](https://nodejs.org/en/) - Server Environment
+- [Mocha](https://mochajs.org/) - Test Framework
+- [Chai](https://www.chaijs.com/) - Assertion Libraries
