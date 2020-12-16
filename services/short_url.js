@@ -104,7 +104,34 @@ const redirectToLongUrl = async (req, res, next) => {
   }
 }
 
+const getShortCodeStats = async (req, res, next) => {
+  try {
+    let url = UrlStore.find(url => url.urlCode === req.params.shortcode);
+
+    if (url !== undefined) {
+      return res.status(200).json({
+        'message': 'shortcode stats successfully fetched',
+        'data': url
+      });
+    }
+
+    return res.status(404).json({
+      'code': 'BAD_REQUEST_ERROR',
+      'description': 'Shortcode not found'
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      'code': 'SERVER_ERROR',
+      'description': 'something went wrong, Please try again',
+      'error': error.message
+    });
+  }
+}
+
+
 module.exports = {
   createShortUrl,
-  redirectToLongUrl
+  redirectToLongUrl,
+  getShortCodeStats
 }

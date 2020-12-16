@@ -5,7 +5,7 @@ let router = express.Router();
 
 router.get('/:shortcode', urlService.redirectToLongUrl);
 
-// router.get('/:shortcode/stats', urlService.getUserById);
+router.get('/:shortcode/stats', urlService.getShortCodeStats);
 
 router.post('/', urlService.createShortUrl);
 
