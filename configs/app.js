@@ -14,9 +14,6 @@ module.exports = function () {
     server.set('port', config.port);
     server.set('hostname', config.hostname);
 
-    server.use(express.json({ limit: '50mb' }));
-    server.use(express.urlencoded({ extended: true, limit: '50mb' }))
-
     // Set up routes
     routes.init(server);
   };
@@ -25,6 +22,7 @@ module.exports = function () {
   start = () => {
     let hostname = server.get('hostname'),
       port = server.get('port');
+
     server.listen(port, function () {
       console.log('Express server listening on - http://' + hostname + ':' + port);
     });
