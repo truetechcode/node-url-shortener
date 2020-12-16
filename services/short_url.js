@@ -5,18 +5,13 @@ const UrlStore = require("../models/UrlStore.json").data;
 
 const createShortUrl = async (req, res, next) => {
   try {
-    shortid.characters('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-
+    shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
     const longUrl = req.body.longUrl;
     const urlCode = req.body.urlCode
     const baseUrl = process.env.baseURL;
     const urlCodeGen = shortid.generate().slice(0, 6);
-
-    if (!validUrl.isUri(baseUrl)) {
-      return res.status(401).json("Internal error. Please come back later.");
-    }
-
-    console.log(req.body)
+    const urlCoded = urlCode || urlCodeGen;
+    const shortUrl = baseUrl + urlCoded;
 
     let validationError = {};
 
@@ -28,9 +23,22 @@ const createShortUrl = async (req, res, next) => {
       }
     }
 
-    if (urlCode === undefined || urlCode === null || urlCode.length < 10) {
-      validationError.description = 'Must be at least 10 characters.';
+    if (urlCode !== undefined && urlCode !== null) {
+      if (urlCode.length < 4) { validationError.urlCode = 'Must be at least 4 characters.'; }
+      else {
+        if (!validUrl.isUri(shortUrl)) {
+          validationError.urlCode = 'Invalid shortcode, shortcodes can only contain digits, upper case letters, and lowercase letters.';
+        }
+      }
+
+      let urlCodeExists = UrlStore.find(url => url.urlCode === urlCode)
+
+      if (!urlCodeExists) {
+        validationError.urlCode = "Url Code already exists.";
+      }
+
     }
+
 
     if (Object.keys(validationError).length > 0) {
       return res.status(422).json({
@@ -40,18 +48,17 @@ const createShortUrl = async (req, res, next) => {
       });
     }
 
-    const shortUrl = baseUrl + '/' + urlCode;
 
     const allowedParams = {
       longUrl,
       shortUrl,
-      urlCode: urlCode || urlCodeGen
+      urlCode: urlCoded,
+      clickCount: 0,
+      createdAt: Date.now(),
+      lastVisitedAt: null,
     };
 
-    let newShortUrl;
-
-    newShortUrl = UrlStore.push({ ...allowedParams });
-
+    UrlStore.push({ ...allowedParams });
 
     return res.status(201).json({
       'message': 'Short Url created successfully',
@@ -69,4 +76,5 @@ const createShortUrl = async (req, res, next) => {
 
 module.exports = {
   createShortUrl,
+
 }

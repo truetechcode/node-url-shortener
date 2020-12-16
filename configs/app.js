@@ -1,11 +1,13 @@
 const express = require('express');
 var cors = require('cors')
+const bodyParser = require('body-parser');
 
 module.exports = function () {
   let server = express(),
     create,
     start;
   server.use(cors())
+  server.use(bodyParser.json());
 
   create = (config) => {
     let routes = require('../routes');
