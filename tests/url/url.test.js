@@ -9,6 +9,7 @@ const UrlService = require("../../services/Url");
 describe("UrlService", function () {
   let baseUrl = process.env.baseURL;
   let urlCode = faker.random.uuid()
+  const UrlModelLength = UrlModel.length;
 
   const stubValue = {
     longUrl: faker.internet.url(),
@@ -18,10 +19,9 @@ describe("UrlService", function () {
     createdAt: faker.date.past(),
     lastVisitedAt: faker.date.recent()
   };
+
   describe("create shortened url", function () {
     it("should add a new shortened url to the store", async function () {
-
-      const UrlModelLength = UrlModel.length;
 
       UrlModel.push({ ...stubValue });
 
@@ -32,17 +32,14 @@ describe("UrlService", function () {
     });
   });
 
-  describe("create shortened url", function () {
-    it("should add a new shortened url to the store", async function () {
+  describe("get shortcode stats", function () {
+    it("should find the url by the shortcode", async function () {
 
-      const UrlModelLength = UrlModel.length;
+      let url = UrlModel.find(url => url.urlCode === stubValue.urlCode);
 
-      UrlModel.push({ ...stubValue });
-
-      expect(UrlModel.length).to.greaterThan(UrlModelLength);
-      expect(UrlModel[0].longUrl).to.equal(stubValue.longUrl);
-      expect(UrlModel[0].shortUrl).to.equal(stubValue.shortUrl);
-      expect(UrlModel[0].urlCode).to.equal(stubValue.urlCode);
+      expect(url).to.not.be.undefined;
+      expect(url.longUrl).to.equal(stubValue.longUrl);
+      expect(url.shortUrl).to.equal(stubValue.shortUrl);
     });
   });
 
