@@ -9,4 +9,4 @@ router.get('/:shortcode/stats', urlService.getShortCodeStats);
 
 router.post('/', urlService.createShortUrl);
 
-module.exports = router;
+module.exports = { router, urlController: urlService };
