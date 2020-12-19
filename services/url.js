@@ -43,7 +43,7 @@ const createShortUrl = async (req, res, next) => {
     if (Object.keys(validationError).length > 0) {
       return res.status(422).json({
         'code': 'REQUIRED_FIELDS_MISSING',
-        'description': 'Your submission contains one or more invalid fields',
+        'message': 'Your submission contains one or more invalid fields',
         'errors': validationError
       });
     }
@@ -68,7 +68,7 @@ const createShortUrl = async (req, res, next) => {
   } catch (error) {
     return res.status(500).json({
       'code': 'SERVER_ERROR',
-      'description': 'something went wrong, Please try again',
+      'message': 'something went wrong, Please try again',
       'error': error.message
     });
   }
