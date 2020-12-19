@@ -80,7 +80,7 @@ const redirectToLongUrl = async (req, res, next) => {
 
     if (url !== undefined) {
 
-      res.redirect(url.longUrl);
+      res.status(200).redirect(url.longUrl);
 
       return UrlStore.forEach(url => {
         if (url.urlCode === req.params.shortcode) {
@@ -92,13 +92,13 @@ const redirectToLongUrl = async (req, res, next) => {
 
     return res.status(404).json({
       'code': 'BAD_REQUEST_ERROR',
-      'description': 'Shortcode not found'
+      'message': 'Shortcode not found'
     });
 
   } catch (error) {
     return res.status(500).json({
       'code': 'SERVER_ERROR',
-      'description': 'something went wrong, Please try again',
+      'message': 'something went wrong, Please try again',
       'error': error.message
     });
   }
@@ -117,13 +117,13 @@ const getShortCodeStats = async (req, res, next) => {
 
     return res.status(404).json({
       'code': 'BAD_REQUEST_ERROR',
-      'description': 'Shortcode not found'
+      'message': 'Shortcode not found'
     });
 
   } catch (error) {
     return res.status(500).json({
       'code': 'SERVER_ERROR',
-      'description': 'something went wrong, Please try again',
+      'message': 'something went wrong, Please try again',
       'error': error.message
     });
   }
