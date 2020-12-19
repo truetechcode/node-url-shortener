@@ -52,6 +52,31 @@ to
 npm start
 ```
 
+- Routes
+
+- - Create New Short Url
+
+```
+POST /api/
+Accepted params
+{
+    "longUrl": "Your-Long-Url", // Required
+    "urlCode": "Your-Shortcode" // Optional
+}
+```
+
+- - Redirect to the Url associated with `<shortcode>`
+
+```
+GET /api/<shortcode>
+```
+
+- - Get stats for `<shortcode>`
+
+```
+GET /api/<shortcode>/stats
+```
+
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [Express](https://expressjs.com/) - NodeJs Framework
